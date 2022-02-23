@@ -29,7 +29,7 @@ describe("02-list", () => {
   });
 
   afterAll(async () => {
-    await connection.execute("DROP DATABASE StoreManager");
+    // await connection.execute("DROP DATABASE StoreManager");
     await connection.end();
   });
 
