@@ -3,6 +3,7 @@ const {expect} = require('chai');
 
 const productsController = require('../../../controllers/products.controler');
 const productsModel = require('../../../models/products.model');
+const productsService = require('../../../services/products.service');
 
 const productsMock =   [
   {
@@ -20,6 +21,7 @@ const productsMock =   [
 describe('TESTA A CAMADA CONTROLLER DOS PRODUTOS', () => {
   const request = {};
   const response = {};
+  let next = () => {};
 
   describe(
     'Testa a função getAll() do productscontroller.',
@@ -100,6 +102,55 @@ describe('TESTA A CAMADA CONTROLLER DOS PRODUTOS', () => {
         await productsController.getById(request, response);
   
         expect(response.status.calledWith(404)).to.be.equal(true);
+      });
+    });
+  });
+
+  describe(
+    'Testa a função create() do productscontroller.',
+    () => {
+    before(() => {
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+      next = sinon.stub().returns();
+    });
+    
+    const serviceSuccessResponse = {
+      code:201,
+      message: '',
+      product: {
+        id:1,
+        name: 'Teira do Miranha',
+        quantity: 19,
+      },
+    };
+
+    describe(
+      'Quando dá certo', () => {
+      before(() => {
+        sinon.stub(productsService, 'create').resolves(serviceSuccessResponse);
+      });
+
+      after(() => {
+        productsService.create.restore();
+      });
+
+      it(
+        'Chama o response.status com o valor da propriedade "code" do serviceResponse',
+        async () => {
+        await productsController.create(request, response, next);
+
+        expect(response.status
+          .calledWith(serviceSuccessResponse.code)).to.be.true;
+      });
+
+      it(
+        'Chama o response.status com o valor da propriedade "product" do serviceResponse',
+        async () => {
+        await productsController.create(request, response, next);
+
+        expect(response.json
+          .calledWith(serviceSuccessResponse.product)).to.be.true;
       });
     });
   });
