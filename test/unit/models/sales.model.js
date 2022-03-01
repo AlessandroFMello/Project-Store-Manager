@@ -165,10 +165,10 @@ describe(
       });
 
       it(
-        'Testa se é retornado como undefined',  async () => {
+        'Testa se é retornado como um array vazio',  async () => {
         const sale = await salesModel.getById(5)
       
-        expect(sale).to.be.deep.equal(undefined);
+        expect(sale).to.be.deep.equal([]);
       })
     })
   });
