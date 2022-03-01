@@ -19,10 +19,6 @@ const getById = async (id) => {
     [id],
     );
 
-  if (saleData.length === 0 || saleData === []) {
-    return saleData[0];
-  }
-
   return saleData;
 };
 
