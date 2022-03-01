@@ -9,12 +9,11 @@ const productsMock =   [
   {
     "id": 1,
     "name": "produto A",
-  "quantity": 10
+    "quantity": 10
   },
   {
     "id": 2,
     "name": "produto B",
-
     "quantity": 20
   },
 ];
@@ -22,19 +21,19 @@ const productsMock =   [
 describe(
   'TESTES CAMADA MODEL DE PRODUTOS',
   () => {
-  before(async () => {
-    sinon.stub(connection, 'execute')
-      .resolves([productsMock]);
-  });
-
-  after(async () => {
-    // RESTORE DO EXECUTE
-    connection.execute.restore();
-  });
-
   describe(
     'Testa a função getAll() do productsModel.',
-    async () => {  
+    async () => { 
+    before(async () => {
+      sinon.stub(connection, 'execute')
+        .resolves([productsMock]);
+    });
+  
+    after(async () => {
+      // RESTORE DO EXECUTE
+      connection.execute.restore();
+    });
+
     it(
       'Testa se é retornado um array com dois itens.',
       async () => {
@@ -84,6 +83,16 @@ describe(
   describe(
     'Testa a função getById() do productsModel.', 
     ()=> {
+    before(async () => {
+      sinon.stub(connection, 'execute')
+        .resolves([productsMock]);
+    });
+  
+    after(async () => {
+      // RESTORE DO EXECUTE
+      connection.execute.restore();
+    });
+
     it(
       'Testa se é retornado apenas um objeto.',
       async () => {
@@ -103,6 +112,88 @@ describe(
         .property('name').to.be.equal('produto A');
       expect(product).to.have
         .property('quantity').to.be.equal(10);
+    });
+  });
+
+  describe(
+    'Testa a função getProductByName() do productsModel.', 
+    ()=> {
+    before(async () => {
+      sinon.stub(connection, 'execute')
+        .resolves([productsMock]);
+    });
+  
+    after(async () => {
+      // RESTORE DO EXECUTE
+      connection.execute.restore();
+    });
+
+    it(
+      'Testa se o nome do produto já existe',
+      async ()=> {
+      const [productName] = await productsModel.getProductByName('produto A');
+
+      if(productName) {
+        expect(productName.name).to.be.equal('produto A');
+      }
+    });
+  });
+
+  describe(
+    'Testa a função create() do productsModel.', 
+    ()=> {
+    const productMock = {
+      name: 'Teia do Miranha',
+      quantity: 19,
+    };
+
+    const executeResponse = [{ insertedId:1 }];
+
+    const modelSuccessResponse = {
+      id: 1,
+      name: 'Teia do Miranha',
+      quantity: 19,
+    };
+
+    describe(
+      'Testa se o produto é criado com sucesso',
+      async ()=> {
+      before(async () => {
+        sinon.stub(connection, 'execute')
+          .resolves(executeResponse);
+      });
+    
+      after(async () => {
+        connection.execute.restore();
+      });
+
+      it(
+        'Retorna um objeto com as informações corretas',
+        async () => {
+          const newProduct = await productsModel.create('Teia do Miranha', 19);
+          const createdProduct = {
+            id: executeResponse[0].insertedId,
+            name: newProduct.name,
+            quantity: newProduct.quantity,
+          }
+
+          expect(createdProduct).to.be.deep.equal(modelSuccessResponse);
+      });
+
+      it(
+        'Testa se o objeto criado contém as chaves corretas',
+        async () => {
+          const newProduct = await productsModel.create('Teia do Miranha', 19);
+          const createdProduct = {
+            id: executeResponse[0].insertedId,
+            name: newProduct.name,
+            quantity: newProduct.quantity,
+          }
+
+          expect(createdProduct).to.have.property('id');
+          expect(createdProduct).to.have.property('name');
+          expect(createdProduct).to.have.property('quantity');
+      });
     });
   });
 });
