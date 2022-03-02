@@ -48,4 +48,12 @@ module.exports = {
       return updateProduct;
     }
   },
+  exclude: async (id) => {
+    const SQL_QUERY = 'DELETE FROM StoreManager.products WHERE id = ?';
+    const [productToExclude] = await connection.execute(
+      SQL_QUERY,
+      [id],
+    );
+    return productToExclude;
+  },
 };
