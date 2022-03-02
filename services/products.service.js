@@ -14,4 +14,13 @@ module.exports = {
   
     return { code: 201, product: newProduct };
   },
+  update: async (id, name, quantity) => {
+    const getProductById = await productsModel.getById(id);
+
+    if (getProductById) {
+      const productToUpdade = await productsModel.update(id, name, quantity);
+      return { code: 200, product: productToUpdade };
+    }
+    return { code: 404, message: 'Product not found' };
+  },
 };
