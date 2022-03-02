@@ -6,7 +6,11 @@ router.get('/', controller.getAll);
 
 router.get('/:id', controller.getById);
 
-router.post('/', salesValidationMiddleware, () => {});
+router.post(
+  '/',
+// salesValidationMiddleware,
+controller.create,
+);
 
 router.put('/:id', salesValidationMiddleware, () => {});
 
