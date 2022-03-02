@@ -4,6 +4,8 @@ module.exports = Joi.object({
   productId: Joi.number().integer().required()
   .messages({
     'any.required': '400|"productId" is required',
+    'number.base': '422|"productId" must be a number',
+    'number.integer': '422|"productId" must be an integer',
     'number.positive': '422|"productId" must be greater than or equal to 1',
   }),
   quantity: Joi.number().integer().positive().strict()
