@@ -2,12 +2,12 @@ const productsModel = require('../models/products.model');
 const productsService = require('../services/products.service');
 
 module.exports = {
-  getAll: async (_req, res) => {
+  getAll: async (_req, res, _next) => {
     const allProducts = await productsModel.getAll();
   
     return res.status(200).json(allProducts);
   },
-  getById: async (req, res) => {
+  getById: async (req, res, _next) => {
     const { id } = req.params;
 
     const product = await productsModel.getById(id);
@@ -25,6 +25,19 @@ module.exports = {
 
     if (!product) {
       return res.status(code).json({ message });
+    }
+
+    return res.status(code).json(product);
+  },
+  update: async (req, res, _next) => {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
+
+    const { code, message, product } = await productsService.update(id, name, quantity);
+  
+    if (!product) {
+      return res.status(code)
+        .json({ message });
     }
 
     return res.status(code).json(product);
