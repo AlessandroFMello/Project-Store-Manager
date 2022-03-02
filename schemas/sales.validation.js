@@ -1,7 +1,8 @@
 const Joi = require('joi');
 
 module.exports = Joi.object({
-  productId: Joi.number().integer().required()
+  productId: Joi.number().integer().positive().strict()
+  .required()
   .messages({
     'any.required': '400|"productId" is required',
     'number.base': '422|"productId" must be a number',

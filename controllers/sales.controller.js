@@ -21,6 +21,7 @@ module.exports = {
   },
   create: async (req, res) => {
     const { code, sale } = await salesService.create(req.body);
+    console.log(sale);
   
     return res.status(code).json(sale);
   },
