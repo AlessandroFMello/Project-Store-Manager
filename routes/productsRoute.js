@@ -18,4 +18,9 @@ router.put(
   controller.update,
 );
 
+router.delete(
+  '/:id',
+  controller.exclude,
+);
+
 module.exports = router;
