@@ -196,4 +196,29 @@ describe(
       });
     });
   });
+
+  describe(
+    'Testa a função update() do productsModel.', 
+    ()=> {
+    before(async () => {
+      sinon.stub(connection, 'execute')
+        .resolves([productsMock]);
+    });
+  
+    after(async () => {
+      // RESTORE DO EXECUTE
+      connection.execute.restore();
+    });
+
+    it(
+      'Testa se o id do produto já existe',
+      async ()=> {
+      const product = await productsModel.getById(1);
+      console.log(product);
+
+      if(product) {
+        expect(product.id).to.be.equal(1);
+      }
+    });
+  });
 });
