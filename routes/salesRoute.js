@@ -8,7 +8,7 @@ router.get('/:id', controller.getById);
 
 router.post(
   '/',
-// salesValidationMiddleware,
+salesValidationMiddleware,
 controller.create,
 );
 
