@@ -8,9 +8,14 @@ router.get('/:id', controller.getById);
 
 router.post(
   '/',
-  productsValidationMiddleware, controller.create,
+  productsValidationMiddleware,
+  controller.create,
 );
 
-router.put('/:id', productsValidationMiddleware, () => {});
+router.put(
+  '/:id',
+  productsValidationMiddleware,
+  controller.update,
+);
 
 module.exports = router;
