@@ -42,4 +42,15 @@ module.exports = {
 
     return res.status(code).json(product);
   },
+  exclude: async (req, res) => {
+    const { id } = req.params;
+
+    const { code, message } = await productsService.exclude(id);
+
+    if (message) {
+      return res.status(code).json({ message });
+    }
+
+    return res.status(code).end();
+  },
 };
