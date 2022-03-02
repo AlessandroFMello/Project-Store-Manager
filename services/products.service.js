@@ -23,4 +23,12 @@ module.exports = {
     }
     return { code: 404, message: 'Product not found' };
   },
+  exclude: async (id) => {
+    const productToExclude = await productsModel.exclude(id);
+  
+    if (!productToExclude.affectedRows) {
+      return { code: 404, message: 'Product not found' };
+    }
+    return { code: 204 };
+  },
 };
