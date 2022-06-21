@@ -12,6 +12,10 @@ salesValidationMiddleware,
 controller.create,
 );
 
-router.put('/:id', salesValidationMiddleware, () => {});
+router.put(
+  '/:id',
+  salesValidationMiddleware,
+  controller.update,
+);
 
 module.exports = router;

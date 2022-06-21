@@ -16,4 +16,22 @@ module.exports = {
       },
     };
   },
+  update: async (saleId, productId, quantity) => {
+    const getSaleById = await salesModel.getById(productId);
+
+    if (!getSaleById) {
+      return { code: 404, message: 'Sale not found' };
+    }
+    await salesModel.update(saleId, productId, quantity);
+    return {
+      code: 200,
+      sale: {
+        saleId,
+        itemUpdated: [{
+          productId,
+          quantity,
+        }],
+      },
+    };
+  },
 };

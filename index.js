@@ -12,7 +12,7 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.use('/products', productsRoute);
+app.use('/products', productsRoute);  
 
 app.use('/sales', salesRoute);
 

@@ -21,8 +21,21 @@ module.exports = {
   },
   create: async (req, res) => {
     const { code, sale } = await salesService.create(req.body);
-    console.log(sale);
   
+    return res.status(code).json(sale);
+  },
+  update: async (req, res, _next) => {
+    const { id } = req.params;
+    const [body] = req.body;
+    const { productId, quantity } = body;
+
+    const { code, message, sale } = await salesService.update(id, productId, quantity);
+  
+    if (!sale) {
+      return res.status(code)
+        .json({ message });
+    }
+
     return res.status(code).json(sale);
   },
 };
